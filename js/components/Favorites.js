@@ -31,7 +31,7 @@ const Favorites = Vue.component('favorites', {
     data () {
         return {
             title: "ZOB",
-            shows: mockShows,
+            shows: [],
             searchString: "",
         }
     },
@@ -58,13 +58,37 @@ const Favorites = Vue.component('favorites', {
         },
     },
     methods: {
-        setFavorite (evt) {
+        async setFavorite (evt) {
+
+            //on fait un feedback coté front
             let movie = this.shows.find((elt) => {
                 return elt.id === evt.id
             })
             movie.favorite = evt.status
+
+            //puis on MAJ côté back
+            try{
+                var {data} = await restClient.post('rest/shows/' + evt.id + '/favorites', {
+                    isFavorites: evt.status
+                })
+            }catch(err){
+                console.log(err)
+            }
         }
     },
-    mounted () {
+    async mounted () {
+
+        try{
+            var { data } = await restClient.get('rest/shows')
+            this.shows = data.map((elt) => {
+                return {
+                    ...elt,
+                    favorite: elt.isFavorites
+                }
+            })
+        }catch(err){
+            console.log('error', err)
+        }
+
     },
 })

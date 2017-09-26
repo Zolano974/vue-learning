@@ -19,9 +19,13 @@ const Show = Vue.component('show', {
             show: null
         }
     },
-    mounted() {
-        this.show = mockShows.find((elt) => {
-            return elt.id == this.id
-        })
+    async mounted() {
+        try{
+            var {data} = await restClient.get('rest/shows/'+this.id)
+            this.show = data
+        }
+        catch(err){
+            console.log(err)
+        }
     }
 })

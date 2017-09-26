@@ -1,10 +1,10 @@
 const router = new VueRouter({
     routes: [
         {
-            path: '/shows',
-            name : 'Shows',
-            component: Series,
-            alias: '/',
+                path: '/shows',
+                name : 'Shows',
+                component: Series,
+                alias: '/',
         },
         {
             path: '/favorites',
@@ -21,13 +21,15 @@ const router = new VueRouter({
             name: 'Show',
             props: true,
         }
+
     ]
 })
+
 
 const mockShows = mockData.shows.map((elt) => {
     return {
         ...elt,
-        favorite: false,
+        favorite: false
     }
 })
 
@@ -38,6 +40,7 @@ Vue.directive('auto-focus', {
         el.focus()
     }
 })
+
 //Déclaration d'un filtre global
 Vue.filter('limit', (text, length = 35) => {
     return text.slice(0, length) + '...'
